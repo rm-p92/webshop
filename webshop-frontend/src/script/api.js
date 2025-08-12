@@ -11,7 +11,7 @@ export async function fetchAuthorized() {
 
 export async function fetchDashboard() {
   const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:3000/dashboard', {
+  const res = await fetch('http://localhost:3000/', {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
