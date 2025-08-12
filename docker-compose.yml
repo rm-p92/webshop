@@ -36,10 +36,10 @@ services:
       - ./webshop-frontend:/app
       - /app/node_modules
     ports:
-      - "3001:3000"
+      - "5173:5173"
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: ["npm", "start"]
+    command: ["npm", "run", "dev", "--", "--host"]
     depends_on:
       - web
 

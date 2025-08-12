@@ -1,17 +1,26 @@
-# React
+# React / Vite
 webshop-frontend/node_modules/
-webshop-frontend/.pnp
-webshop-frontend/.pnp.js
-webshop-frontend/coverage
-webshop-frontend/build
-webshop-frontend/.DS_Store
-webshop-frontend/.env.local
-webshop-frontend/.env.development.local
-webshop-frontend/.env.test.local
-webshop-frontend/.env.production.local
+webshop-frontend/dist/
+webshop-frontend/dist-ssr/
+webshop-frontend/logs/
+webshop-frontend/*.log
 webshop-frontend/npm-debug.log*
 webshop-frontend/yarn-debug.log*
 webshop-frontend/yarn-error.log*
+webshop-frontend/pnpm-debug.log*
+webshop-frontend/lerna-debug.log*
+webshop-frontend/*.local
+webshop-frontend/.DS_Store
+
+# Editor directories and files
+webshop-frontend/.vscode/*
+!webshop-frontend/.vscode/extensions.json
+webshop-frontend/.idea
+webshop-frontend/*.suo
+webshop-frontend/*.ntvs*
+webshop-frontend/*.njsproj
+webshop-frontend/*.sln
+webshop-frontend/*.sw?
 
 # Rails
 webshop-api/.bundle
