@@ -1,6 +1,8 @@
+export const API_URL = import.meta.env.VITE_API_URL;
+
 export async function fetchAuthorized() {
   const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:3000/authorized', {
+  const res = await fetch(`${API_URL}/authorized`, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -11,7 +13,7 @@ export async function fetchAuthorized() {
 
 export async function fetchDashboard() {
   const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:3000/', {
+  const res = await fetch(`${API_URL}`, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'

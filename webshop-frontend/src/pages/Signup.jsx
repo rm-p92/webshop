@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_URL } from '../script/api';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ export default function Signup() {
     e.preventDefault();
     setError('');
     try {
-      const res = await fetch('http://localhost:3000/signup', {
+      const res = await fetch(`${API_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
