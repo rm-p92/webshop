@@ -28,6 +28,7 @@ export default function Header() {
                         <Link to="/signup">Sign Up</Link>
                     </>
                 )}
+                <Link to="/books">Books</Link>
             </div>
         </header>
     );
