@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_14_045319) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_14_100214) do
   create_table "authors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "bio"
@@ -38,6 +38,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_045319) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -45,8 +51,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_14_045319) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "role_id", null: false
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "books", "authors"
   add_foreign_key "books", "genres"
+  add_foreign_key "users", "roles"
 end

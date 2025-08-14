@@ -5,23 +5,40 @@ import Signup from './pages/Signup';
 import Header from './components/Header';
 import Books from './pages/Books';
 
+// Admin pages
+import RequireAdmin from './components/RequireAdmin';
+import BooksIndex from './pages/admin/books/Index';
+import AddBook from './pages/admin/books/Add';
+import EditBook from './pages/admin/books/Edit';
+import ShowBook from './pages/admin/books/Show';
+
 function Home() {
     const isLoggedIn = !!localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+    console.log('User role:', role);
 
     return (
         <div>
-            <div>
-                <h1>Welcome to Webshop</h1>
+            <h1>Welcome to Webshop</h1>
 
-                {!isLoggedIn && (
-                    <nav>
-                        <Link to="/login">Login</Link>
-                        <Link to="/signup">Sign Up</Link>
-                    </nav>
-                )}
+            {!isLoggedIn && (
+                <nav>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">Sign Up</Link>
+                </nav>
+            )}
 
-                {isLoggedIn && <p>You are logged in!</p>}
-            </div>
+            {isLoggedIn && (
+                <nav>
+                    <Link to="/books">Books</Link>
+                    {role == 'admin' && (
+                        <>
+                            {' | '}
+                            <Link to="/admin/books">Manage Books</Link>
+                        </>
+                    )}
+                </nav>
+            )}
         </div>
     );
 }
@@ -35,6 +52,40 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/books" element={<Books />} />
+
+                {/* Admin Book Routes */}
+                <Route
+                    path="/admin/books"
+                    element={
+                        <RequireAdmin>
+                            <BooksIndex />
+                        </RequireAdmin>
+                    }
+                />
+                <Route
+                    path="/admin/books/add"
+                    element={
+                        <RequireAdmin>
+                            <AddBook />
+                        </RequireAdmin>
+                    }
+                />
+                <Route
+                    path="/admin/books/edit/:id"
+                    element={
+                        <RequireAdmin>
+                            <EditBook />
+                        </RequireAdmin>
+                    }
+                />
+                <Route
+                    path="/admin/books/:id"
+                    element={
+                        <RequireAdmin>
+                            <ShowBook />
+                        </RequireAdmin>
+                    }
+                />
             </Routes>
         </Router>
     );

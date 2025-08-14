@@ -4,6 +4,7 @@ This project is a monorepo containing:
 - **webshop-api**: Ruby on Rails API backend
 - **webshop-frontend**: React (Create React App) frontend
 - **MySQL**: Database, managed via Docker
+- **Traefik**: Reverse proxy for routing requests to the correct service
 
 ## Prerequisites
 

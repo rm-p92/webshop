@@ -11,9 +11,37 @@
 require "faker"
 include ERB::Util
 
+# Wipe data (order matters for foreign keys)
 Book.destroy_all
 Author.destroy_all
 Genre.destroy_all
+User.destroy_all
+Role.destroy_all
+
+# Roles
+admin_role    = Role.find_or_create_by!(name: "admin")
+customer_role = Role.find_or_create_by!(name: "customer")
+
+# Admin user
+User.create!(
+  email: "admin@webshop.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: admin_role
+)
+
+# Normal users
+[
+  "user1@webshop.com",
+  "user2@webshop.com"
+].each do |email|
+  User.create!(
+    email: email,
+    password: "password123",
+    password_confirmation: "password123",
+    role: customer_role
+  )
+end
 
 # Genres
 fiction     = Genre.create!(name: "Fiction")
@@ -58,4 +86,4 @@ end
   )
 end
 
-puts "Seeded #{Book.count} books, #{Author.count} authors, #{Genre.count} genres"
+puts "Seeded #{Book.count} books, #{Author.count} authors, #{Genre.count} genres, #{User.count} users, #{Role.count} roles"

@@ -21,7 +21,13 @@ export default function Login() {
 
             if (res.ok && data.jwt) {
                 localStorage.setItem('token', data.jwt);
-                navigate('/');
+                localStorage.setItem('role', data.user.role_name);
+
+                if (data.user.role_name === 'admin') {
+                    navigate('/admin/books');
+                } else {
+                    navigate('/books');
+                }
             } else {
                 setError(data.error || 'Login failed');
             }

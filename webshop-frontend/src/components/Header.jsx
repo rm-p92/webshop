@@ -4,10 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Header() {
     const navigate = useNavigate();
     const isLoggedIn = !!localStorage.getItem('token');
+    const role = localStorage.getItem('role');
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        navigate('/login');
+        localStorage.removeItem('role');
+        navigate('/');
+        window.location.reload(); // refresh to reset UI
     };
 
     return (
@@ -19,6 +22,13 @@ export default function Header() {
                 {isLoggedIn ? (
                     <>
                         <span>Logged in</span>
+                        {role === 'admin' && (
+                            <>
+                                {' | '}
+                                <Link to="/admin/books">Manage Books</Link>
+                            </>
+                        )}
+                        {' | '}
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
@@ -28,6 +38,7 @@ export default function Header() {
                         <Link to="/signup">Sign Up</Link>
                     </>
                 )}
+                {' | '}
                 <Link to="/books">Books</Link>
             </div>
         </header>

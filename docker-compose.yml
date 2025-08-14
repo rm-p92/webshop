@@ -32,6 +32,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.web.rule=Host(`dev.webshop-api.localhost`)"
       - "traefik.http.services.web.loadbalancer.server.port=3000"
+    env_file:
+      - .env
 
   frontend:
     build: ./webshop-frontend
