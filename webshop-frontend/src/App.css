@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply bg-neutral-50 text-neutral-800 antialiased leading-relaxed p-4;
+        font-size: 16px;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-semibold tracking-tight text-neutral-900;
+    }
+    h1 { @apply text-3xl md:text-4xl mb-6; }
+    h2 { @apply text-2xl md:text-3xl mb-5; }
+    h3 { @apply text-xl md:text-2xl mb-4; }
+    h4 { @apply text-lg mb-3; }
+    h5 { @apply text-base mb-2; }
+    h6 { @apply text-sm uppercase mb-2 text-neutral-500; }
+
+    /* Paragraphs */
+    p {
+        @apply mb-4;
+    }
+
+    /* Links */
+    a {
+        @apply underline underline-offset-2 decoration-neutral-300 text-neutral-900 hover:decoration-neutral-500 transition cursor-pointer;
+        @apply mr-2;
+    }
+
+    /* Lists */
+    ul { @apply list-disc pl-6 mb-4; }
+    ol { @apply list-decimal pl-6 mb-4; }
+    li { @apply mb-1; }
+
+    /* Code blocks */
+    code {
+        @apply rounded px-1.5 py-0.5 text-sm bg-neutral-100 text-neutral-800;
+    }
+    pre {
+        @apply my-4 overflow-x-auto rounded-lg p-4 bg-neutral-100;
+    }
+    pre code { @apply p-0 bg-transparent; }
+
+    /* Blockquotes */
+    blockquote {
+        @apply my-6 border-l-4 pl-4 italic text-neutral-700 border-neutral-300;
+    }
+
+    /* Horizontal rule */
+    hr {
+        @apply my-8 border-neutral-200;
+    }
+
+    /* Tables */
+    table {
+        @apply w-full text-left border-collapse my-6;
+    }
+    thead th {
+        @apply border-b border-neutral-200 py-2 text-sm font-medium text-neutral-600;
+    }
+    tbody td {
+        @apply border-b border-neutral-100 py-2 align-top;
+    }
+    tbody tr:last-child td {
+        @apply border-b-0;
+    }
+
+    /* Forms */
+    input, select, textarea {
+        @apply w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm placeholder-neutral-400 shadow-sm mb-3;
+    }
+    input[type="checkbox"], input[type="radio"] {
+        @apply w-4 h-4 align-middle mr-2 rounded border-neutral-300 cursor-pointer;
+    }
+    label {
+        @apply block mb-1 text-sm font-medium text-neutral-700;
+    }
+
+    /* Buttons */
+    button, [type="button"], [type="submit"] {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
+               bg-neutral-900 text-neutral-50
+               hover:opacity-90 active:opacity-80
+               transition shadow-sm cursor-pointer mb-3;
+    }
+    button[disabled] {
+        @apply opacity-50 pointer-events-none;
+    }
+
+    /* Focus styles */
+    :is(a, button, input, select, textarea, summary):focus-visible {
+        @apply outline-none ring-2 ring-offset-2 ring-neutral-400 ring-offset-neutral-50;
+    }
+
+    /* Details summary */
+    details { @apply my-4; }
+    summary { @apply cursor-pointer select-none; }
+
+    /* Keyboard input & highlights */
+    kbd {
+        @apply inline-block rounded border border-neutral-300 px-1.5 py-0.5 text-xs font-medium bg-neutral-100;
+    }
+    mark {
+        @apply bg-yellow-200/60 px-1 rounded;
+    }
+
+    /* Give space between children in articles & sections */
+    article > * + *, section > * + * {
+        @apply mt-4;
+    }
+
+    /* Smooth theme change transitions */
+    * {
+        @apply motion-safe:transition-colors motion-safe:duration-200;
+    }
+}
+
+@layer components {
+    /* Muted button variant */
+    .btn-muted {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
+               bg-neutral-100 text-neutral-900
+               hover:bg-neutral-200 shadow-sm cursor-pointer mb-3;
+    }
+}

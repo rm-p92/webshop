@@ -1,5 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import './App.css';
 
 body {
-  @apply h-full;
+    @apply h-full;
 }
