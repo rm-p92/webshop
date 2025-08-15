@@ -12,17 +12,27 @@ export default function CartProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     const loadCart = async () => {
+        setLoading(true);
+
         const token = localStorage.getItem('token');
         if (!token) {
             setCart(null);
+            setLoading(false); // important!
             return;
         }
 
         try {
             const data = await getCart();
-            setCart(data);
+            if (!data.error) {
+                setCart(data);
+            } else {
+                setCart(null);
+            }
         } catch (err) {
             console.error("Error loading cart:", err);
+            setCart(null);
+        } finally {
+            setLoading(false); // always stop loading
         }
     };
 
@@ -43,7 +53,7 @@ export default function CartProvider({ children }) {
 
     useEffect(() => {
         loadCart();
-    }, []);
+    }, [localStorage.getItem('token')]);
 
     return (
         <CartContext.Provider

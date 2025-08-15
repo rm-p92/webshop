@@ -19,7 +19,6 @@ import ShowBook from './pages/admin/books/Show';
 function Home() {
     const isLoggedIn = !!localStorage.getItem('token');
     const role = localStorage.getItem('role');
-    console.log('User role:', role);
 
     return (
         <div>

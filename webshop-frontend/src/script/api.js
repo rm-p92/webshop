@@ -38,6 +38,20 @@ export function fetchAuthorized() {
     return apiRequest('/authorized');
 }
 
+export function login(email, password) {
+    return apiRequest('/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+    });
+}
+
+export function signup(email, password) {
+    return apiRequest('/signup', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+    });
+}
+
 // Books CRUD
 export function getBooks() {
     return apiRequest('/books');

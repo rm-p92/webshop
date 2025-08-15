@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../script/api';
+import { signup as signupApi } from '../script/api';
 
 export default function Signup() {
     const [email, setEmail] = useState('');
@@ -12,23 +12,24 @@ export default function Signup() {
         e.preventDefault();
         setError('');
         try {
-            const res = await fetch(`${API_URL}/signup`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-            const data = await res.json();
+            const data = await signupApi(email, password);
 
-            if (res.ok && data.jwt) {
+            if (data.jwt) {
                 localStorage.setItem('token', data.jwt);
-                navigate('/');
+                localStorage.setItem('role', data.user.role_name);
+
+                if (data.user.role_name === 'admin') {
+                    navigate('/admin/books');
+                } else {
+                    navigate('/books');
+                }
             } else {
                 setError(
                     data.errors?.join(', ') || data.error || 'Signup failed'
                 );
             }
-        } catch {
-            setError('Network error');
+        } catch(e) {
+            setError(e.message);
         }
     };
 

@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../script/api';
+import { login as loginApi } from '../script/api';
+import { useCart } from '../context/CartContext';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { reload } = useCart();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         try {
-            const res = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-            const data = await res.json();
+            const data = await loginApi(email, password);
 
-            if (res.ok && data.jwt) {
+            if (data.jwt) {
                 localStorage.setItem('token', data.jwt);
                 localStorage.setItem('role', data.user.role_name);
+
+                reload();
 
                 if (data.user.role_name === 'admin') {
                     navigate('/admin/books');
@@ -31,8 +30,8 @@ export default function Login() {
             } else {
                 setError(data.error || 'Login failed');
             }
-        } catch {
-            setError('Network error');
+        } catch(e) {
+            setError(e.message);
         }
     };
 

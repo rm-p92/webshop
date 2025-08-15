@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { getBooks, addToCart } from '../script/api';
-import { useNavigate } from 'react-router-dom';
+import { getBooks } from '../script/api';
 import { useCart } from '../context/CartContext';
 
 export default function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { loadCart } = useCart();
-    const navigate = useNavigate();
+    const { addItem } = useCart();
 
     useEffect(() => {
         async function fetchBooks() {
@@ -23,20 +21,6 @@ export default function Books() {
         }
         fetchBooks();
     }, []);
-
-    const handleAddToCart = async (bookId) => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            navigate('/login');
-            return;
-        }
-        try {
-            await addToCart(bookId);
-            loadCart();
-        } catch (err) {
-            alert("Failed to add to cart");
-        }
-    };
 
     if (loading) return <p>Loading books...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -71,8 +55,8 @@ export default function Books() {
                         <p className="font-bold">${book.price}</p>
 
                         <button
-                            onClick={() => handleAddToCart(book.id)}
-                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                            onClick={() => addItem(book.id)}
+                            className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Add to Cart
                         </button>
