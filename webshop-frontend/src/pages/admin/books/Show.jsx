@@ -5,7 +5,7 @@ import { getBook } from '../../../script/api';
 export default function ShowBook() {
     const { id } = useParams();
     const [book, setBook] = useState(null);
-    
+
     useEffect(() => {
         getBook(id).then(setBook);
     }, [id]);
@@ -30,7 +30,8 @@ export default function ShowBook() {
                 <strong>Author:</strong> {book.author?.name}
             </p>
             <p>
-                <strong>Genre:</strong> {book.genre?.name}
+                <strong>Genre:</strong>{' '}
+                {book.genre_hierarchy?.join(' → ') || '—'}
             </p>
 
             <div style={{ marginTop: '1rem' }}>

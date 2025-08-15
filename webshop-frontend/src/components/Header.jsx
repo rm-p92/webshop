@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 export default function Header() {
     const navigate = useNavigate();
     const isLoggedIn = !!localStorage.getItem('token');
     const role = localStorage.getItem('role');
+
+    const { cart } = useCart();
+    const cartCount = cart?.cart_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -40,6 +44,8 @@ export default function Header() {
                 )}
                 {' | '}
                 <Link to="/books">Books</Link>
+                {' | '}
+                <Link to="/cart">Cart ({cartCount})</Link>
             </div>
         </header>
     );

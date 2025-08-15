@@ -75,3 +75,28 @@ export function getAuthors() {
 export function getGenres() {
     return apiRequest('/genres');
 }
+
+// Cart
+export function getCart() {
+    return apiRequest("/cart"); // GET /cart
+}
+
+export function addToCart(book_id, quantity = 1) {
+    return apiRequest("/cart/add", {
+        method: "POST",
+        body: JSON.stringify({ book_id, quantity }),
+    });
+}
+
+export function updateCartItem(itemId, quantity) {
+    return apiRequest(`/cart/update/${itemId}`, {
+        method: "PUT",
+        body: JSON.stringify({ quantity }),
+    });
+}
+
+export function removeFromCart(itemId) {
+    return apiRequest(`/cart/remove/${itemId}`, {
+        method: "DELETE",
+    });
+}

@@ -10,6 +10,12 @@ Rails.application.routes.draw do
   resources :genres, only: [:index]
 
   resources :books, only: [:index, :show, :create, :update, :destroy]
+
+  get "/cart", to: "carts#show"
+  post "/cart/add", to: "carts#add_item"
+  put "/cart/update/:id", to: "carts#update_item"
+  delete "/cart/remove/:id", to: "carts#remove_item"
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

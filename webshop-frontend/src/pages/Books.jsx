@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { API_URL } from '../script/api';
+import { getBooks, addToCart } from '../script/api';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 export default function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { loadCart } = useCart();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchBooks() {
             try {
-                const res = await fetch(`${API_URL}/books`);
-                if (!res.ok) throw new Error('Failed to fetch books');
-                const data = await res.json();
+                const data = await getBooks();
                 setBooks(data);
             } catch (err) {
                 setError(err.message);
@@ -21,6 +23,20 @@ export default function Books() {
         }
         fetchBooks();
     }, []);
+
+    const handleAddToCart = async (bookId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
+        try {
+            await addToCart(bookId);
+            loadCart();
+        } catch (err) {
+            alert("Failed to add to cart");
+        }
+    };
 
     if (loading) return <p>Loading books...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -53,6 +69,13 @@ export default function Books() {
                             {book.description}
                         </p>
                         <p className="font-bold">${book.price}</p>
+
+                        <button
+                            onClick={() => handleAddToCart(book.id)}
+                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                        >
+                            Add to Cart
+                        </button>
                     </div>
                 ))}
             </div>
