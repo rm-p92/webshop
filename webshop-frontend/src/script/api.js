@@ -140,3 +140,9 @@ export function updateOrder(id, status) {
         body: JSON.stringify({ status })
     });
 }
+
+export async function deleteOrder(id) {
+  return apiRequest(`/orders/${id}`, {
+    method: "DELETE",
+  });
+}

@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authorize
-  before_action :set_order, only: [:show, :update]
-  before_action :require_admin, only: [:update, :get_all_orders]
+  before_action :set_order, only: [:show, :update, :destroy]
+  before_action :require_admin, only: [:update, :get_all_orders, :destroy]
 
   ORDER_ITEM_TREE = ['order_items', 'order_items.book', 'user'].freeze
 
@@ -52,6 +52,11 @@ class OrdersController < ApplicationController
     else
       render json: { errors: @order.errors.full_messages }, status: :unprocessable_content
     end
+  end
+
+  def destroy
+    @order.destroy
+    head :no_content
   end
 
   private

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   put "/cart/update/:id", to: "carts#update_item"
   delete "/cart/remove/:id", to: "carts#remove_item"
 
-  resources :orders, only: [:index, :show, :create, :update] do
+  resources :orders, only: [:index, :show, :create, :update, :destroy] do
     collection do
       get :all, to: "orders#get_all_orders"
     end

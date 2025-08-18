@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { getOrder, updateOrder } from "../../../script/api";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { getOrder, updateOrder, deleteOrder } from "../../../script/api";
 
 export default function ShowOrder() {
     const { id } = useParams();
     const [order, setOrder] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadOrder();
@@ -22,6 +23,18 @@ export default function ShowOrder() {
             loadOrder();
         } catch (err) {
             console.error("Error updating order:", err);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete this order?")) return;
+
+        try {
+            await deleteOrder(order.id);
+            navigate("/admin/orders");
+        } catch (err) {
+            console.error("Error deleting order:", err);
+            alert("Failed to delete order: " + err.message);
         }
     };
 
@@ -55,14 +68,27 @@ export default function ShowOrder() {
             <ul>
                 {order.order_items.map((item) => (
                     <li key={item.id}>
-                        {item.book?.title} — {item.quantity} × ${item.price} = $
-                        {item.subtotal}
+                        {item.book?.title} — {item.quantity} × ${item.price} = ${item.subtotal}
                     </li>
                 ))}
             </ul>
 
             <div style={{ marginTop: "1rem" }}>
-                <Link to="/admin/orders">⬅ Back to Orders</Link>
+                <Link to="/admin/orders">⬅ Back to Orders</Link>{" "}
+                <button
+                    onClick={handleDelete}
+                    style={{
+                        background: "red",
+                        color: "white",
+                        border: "none",
+                        padding: "0.4rem 0.8rem",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        marginLeft: "1rem",
+                    }}
+                >
+                    Delete Order
+                </button>
             </div>
         </div>
     );

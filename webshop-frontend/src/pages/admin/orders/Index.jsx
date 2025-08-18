@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllOrders } from "../../../script/api";
+import { getAllOrders, deleteOrder } from "../../../script/api";
 
 export default function OrdersIndex() {
     const [orders, setOrders] = useState([]);
@@ -8,18 +8,30 @@ export default function OrdersIndex() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        async function loadOrders() {
-            try {
-                const data = await getAllOrders();
-                setOrders(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        }
         loadOrders();
     }, []);
+
+    async function loadOrders() {
+        try {
+            const data = await getAllOrders();
+            setOrders(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function handleDelete(id) {
+        if (!window.confirm("Are you sure you want to delete this order?")) return;
+
+        try {
+            await deleteOrder(id);
+            setOrders((prev) => prev.filter((order) => order.id !== id));
+        } catch (err) {
+            alert("Failed to delete order: " + err.message);
+        }
+    }
 
     if (loading) return <p>Loading orders...</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -60,9 +72,25 @@ export default function OrdersIndex() {
                             <strong>Customer:</strong>{" "}
                             {order.user?.email || "Unknown"}
                         </div>
-                        <Link to={`/admin/orders/${order.id}`}>
-                            View details →
-                        </Link>
+                        <div style={{ marginTop: "0.5rem" }}>
+                            <Link to={`/admin/orders/${order.id}`}>
+                                View details →
+                            </Link>{" "}
+                            |{" "}
+                            <button
+                                onClick={() => handleDelete(order.id)}
+                                style={{
+                                    background: "red",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "0.3rem 0.6rem",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </li>
                 ))}
             </ul>
