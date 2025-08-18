@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getBooks } from '../script/api';
 import { useCart } from '../context/CartContext';
+import { useAlert } from "../context/AlertContext";
 
 export default function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const { addItem } = useCart();
+    const { showAlert } = useAlert();
 
     useEffect(() => {
         async function fetchBooks() {
@@ -21,6 +23,15 @@ export default function Books() {
         }
         fetchBooks();
     }, []);
+
+    const handleAddToCart = async (bookId) => {
+        try {
+            await addItem(bookId);
+            showAlert("Item added to cart!", "success");
+        } catch {
+            showAlert("Failed to add item to cart", "error");
+        }
+    }
 
     if (loading) return <p>Loading books...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -55,7 +66,7 @@ export default function Books() {
                         <p className="font-bold">${book.price}</p>
 
                         <button
-                            onClick={() => addItem(book.id)}
+                            onClick={() => handleAddToCart(book.id)}
                             className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Add to Cart

@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import CartProvider from "./context/CartContext";
+import AlertProvider from "./context/AlertContext";
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Header from './components/Header';
 import Books from './pages/Books';
-import CartPage from './pages/cart/Index'; // ✅ Added import
+import Cart from './pages/cart/Index';
+import Checkout from './pages/Checkout';
 
 // Admin pages
 import RequireAdmin from './components/RequireAdmin';
@@ -49,49 +51,52 @@ function Home() {
 export default function App() {
     return (
         <Router>
-            <CartProvider>
-                <Header />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/books" element={<Books />} />
-                    <Route path="/cart" element={<CartPage />} />
+            <AlertProvider>
+                <CartProvider>
+                    <Header />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/books" element={<Books />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/checkout" element={<Checkout />} />
 
-                    <Route
-                        path="/admin/books"
-                        element={
-                            <RequireAdmin>
-                                <BooksIndex />
-                            </RequireAdmin>
-                        }
-                    />
-                    <Route
-                        path="/admin/books/add"
-                        element={
-                            <RequireAdmin>
-                                <AddBook />
-                            </RequireAdmin>
-                        }
-                    />
-                    <Route
-                        path="/admin/books/edit/:id"
-                        element={
-                            <RequireAdmin>
-                                <EditBook />
-                            </RequireAdmin>
-                        }
-                    />
-                    <Route
-                        path="/admin/books/:id"
-                        element={
-                            <RequireAdmin>
-                                <ShowBook />
-                            </RequireAdmin>
-                        }
-                    />
-                </Routes>
-            </CartProvider>
+                        <Route
+                            path="/admin/books"
+                            element={
+                                <RequireAdmin>
+                                    <BooksIndex />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/admin/books/add"
+                            element={
+                                <RequireAdmin>
+                                    <AddBook />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/admin/books/edit/:id"
+                            element={
+                                <RequireAdmin>
+                                    <EditBook />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/admin/books/:id"
+                            element={
+                                <RequireAdmin>
+                                    <ShowBook />
+                                </RequireAdmin>
+                            }
+                        />
+                    </Routes>
+                </CartProvider>
+            </AlertProvider>
         </Router>
     );
 }
