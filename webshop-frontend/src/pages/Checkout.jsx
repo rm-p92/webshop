@@ -1,16 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { createOrder } from "../script/api";
 
 export default function CheckoutPage() {
-    const { cart, loading } = useCart();
+    const { cart, loading, reload } = useCart();
     const navigate = useNavigate();
 
     if (loading) return <p>Loading checkout...</p>;
     if (!cart || !cart.cart_items?.length) return <p>Your cart is empty.</p>;
 
-    const handleCheckout = () => {
-        alert("Checkout functionality coming soon!");
-        navigate("/books");
+    const handleCheckout = async () => {
+        try {
+            const order = await createOrder(); 
+            await reload(); 
+            alert("Order placed successfully!");
+            navigate(`/orders/${order.id}`);
+        } catch (err) {
+            alert("Failed to place order: " + err.message);
+        }
     };
 
     return (

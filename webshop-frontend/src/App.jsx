@@ -10,13 +10,18 @@ import Header from './components/Header';
 import Books from './pages/Books';
 import Cart from './pages/cart/Index';
 import Checkout from './pages/Checkout';
+import Orders from './pages/order/Index';
+import Order from "./pages/order/Show";
 
 // Admin pages
 import RequireAdmin from './components/RequireAdmin';
+import AdminDashboard from './pages/admin/Dashboard';
 import BooksIndex from './pages/admin/books/Index';
 import AddBook from './pages/admin/books/Add';
 import EditBook from './pages/admin/books/Edit';
 import ShowBook from './pages/admin/books/Show';
+import OrdersIndex from './pages/admin/orders/Index';
+import ShowOrder from './pages/admin/orders/Show';
 
 function Home() {
     const isLoggedIn = !!localStorage.getItem('token');
@@ -61,7 +66,17 @@ export default function App() {
                         <Route path="/books" element={<Books />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/orders" element={<Orders />} />
+                        <Route path="/orders/:id" element={<Order />} />
 
+                        <Route
+                            path="/admin/"
+                            element={
+                                <RequireAdmin>
+                                    <AdminDashboard />
+                                </RequireAdmin>
+                            }
+                        />
                         <Route
                             path="/admin/books"
                             element={
@@ -94,6 +109,24 @@ export default function App() {
                                 </RequireAdmin>
                             }
                         />
+
+                        <Route
+                            path="/admin/orders"
+                            element={
+                                <RequireAdmin>
+                                    <OrdersIndex />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/admin/orders/:id"
+                            element={
+                                <RequireAdmin>
+                                    <ShowOrder />
+                                </RequireAdmin>
+                            }
+                        />
+
                     </Routes>
                 </CartProvider>
             </AlertProvider>

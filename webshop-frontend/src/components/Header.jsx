@@ -26,13 +26,6 @@ export default function Header() {
                 {isLoggedIn ? (
                     <>
                         <span>Logged in</span>
-                        {role === 'admin' && (
-                            <>
-                                {' | '}
-                                <Link to="/admin/books">Manage Books</Link>
-                            </>
-                        )}
-                        {' | '}
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (
@@ -46,6 +39,15 @@ export default function Header() {
                 <Link to="/books">Books</Link>
                 {' | '}
                 <Link to="/cart">Cart ({cartCount})</Link>
+                {' | '}
+                <Link to="/orders">Orders</Link>
+
+                {role === "admin" && (
+                    <>
+                        {" | "}
+                        <Link to="/admin">⚙️ Admin Dashboard</Link>
+                    </>
+                )}
             </div>
         </header>
     );

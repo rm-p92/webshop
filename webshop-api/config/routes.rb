@@ -15,6 +15,12 @@ Rails.application.routes.draw do
   post "/cart/add", to: "carts#add_item"
   put "/cart/update/:id", to: "carts#update_item"
   delete "/cart/remove/:id", to: "carts#remove_item"
+
+  resources :orders, only: [:index, :show, :create, :update] do
+    collection do
+      get :all, to: "orders#get_all_orders"
+    end
+  end
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

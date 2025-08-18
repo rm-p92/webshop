@@ -114,3 +114,29 @@ export function removeFromCart(itemId) {
         method: "DELETE",
     });
 }
+
+// Orders
+export function getOrders() {
+    return apiRequest("/orders");
+}
+
+export function getAllOrders() {
+  return apiRequest("/orders/all");
+}
+
+export function getOrder(id) {
+    return apiRequest(`/orders/${id}`);
+}
+
+export function createOrder() {
+    return apiRequest("/orders", {
+        method: "POST",
+    });
+}
+
+export function updateOrder(id, status) {
+    return apiRequest(`/orders/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ status })
+    });
+}

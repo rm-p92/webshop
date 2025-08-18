@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_15_085300) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_18_065154) do
   create_table "authors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "bio"
@@ -55,6 +55,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_085300) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "order_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "book_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "price", precision: 10, scale: 2
+    t.index ["book_id"], name: "index_order_items_on_book_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
+  create_table "orders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -77,5 +96,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_085300) do
   add_foreign_key "cart_items", "books"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "carts", "users"
+  add_foreign_key "order_items", "books"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "users"
   add_foreign_key "users", "roles"
 end
