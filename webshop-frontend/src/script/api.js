@@ -53,8 +53,9 @@ export function signup(email, password) {
 }
 
 // Books CRUD
-export function getBooks() {
-    return apiRequest('/books');
+export function getBooks(search = "") {
+    const query = search ? `?search=${encodeURIComponent(search)}` : "";
+    return apiRequest(`/books${query}`);
 }
 
 export function getBook(id) {

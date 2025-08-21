@@ -5,6 +5,13 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.includes(genre: :parent, author: {})
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @books = @books.joins(:genre, :author).where(
+        "books.title LIKE :search OR books.description LIKE :search OR genres.name LIKE :search OR authors.name LIKE :search",
+        search: search_term
+      )
+    end
     render json: @books.as_json(
       only: [:id, :title, :description, :price, :cover_image],
       methods: [:genre_hierarchy],

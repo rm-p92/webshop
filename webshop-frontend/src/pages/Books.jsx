@@ -7,22 +7,35 @@ export default function Books() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [search, setSearch] = useState('');
+    const [searching, setSearching] = useState(false);
     const { addItem } = useCart();
     const { showAlert } = useAlert();
 
-    useEffect(() => {
-        async function fetchBooks() {
-            try {
-                const data = await getBooks();
-                setBooks(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+    // Fetch books (with optional search)
+    const fetchBooks = async (searchTerm = "") => {
+        setLoading(true);
+        setError('');
+        try {
+            const data = await getBooks(searchTerm);
+            setBooks(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
         fetchBooks();
     }, []);
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        setSearching(true);
+        await fetchBooks(search);
+        setSearching(false);
+    };
 
     const handleAddToCart = async (bookId) => {
         try {
@@ -39,6 +52,22 @@ export default function Books() {
     return (
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">Books</h1>
+            <form onSubmit={handleSearch} className="mb-6 flex gap-2">
+                <input
+                    type="text"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    placeholder="Search by title, author, genre..."
+                    className="border px-3 py-2 rounded w-full max-w-xs"
+                />
+                <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    disabled={searching}
+                >
+                    {searching ? "Searching..." : "Search"}
+                </button>
+            </form>
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {books.map((book) => (
                     <div
@@ -54,17 +83,13 @@ export default function Books() {
                         <p className="text-sm text-gray-600 mb-1">
                             {book.author?.name}
                         </p>
-
-                        {/* Show all genre layers */}
                         <p className="text-xs text-gray-500 mb-2">
                             {book.genre_hierarchy?.join(' → ')}
                         </p>
-
                         <p className="text-gray-700 text-sm line-clamp-3 mb-2">
                             {book.description}
                         </p>
                         <p className="font-bold">${book.price}</p>
-
                         <button
                             onClick={() => handleAddToCart(book.id)}
                             className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
