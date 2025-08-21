@@ -1,11 +1,11 @@
 import { Navigate } from 'react-router-dom';
 
-export default function RequireAdmin({ children }) {
+export default function BlockedRoute({ children, roles = [] }) {
     const role = localStorage.getItem('role');
 
-    if (role !== 'admin') {
+    if (roles.includes(role)) {
         return <Navigate to="/" replace />;
     }
-
+    
     return children;
 }

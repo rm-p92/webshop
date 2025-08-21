@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import CartProvider from "./context/CartContext";
 import AlertProvider from "./context/AlertContext";
+import BlockedRoute from './context/BlockedRoute';
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -14,7 +15,6 @@ import Orders from './pages/order/Index';
 import Order from "./pages/order/Show";
 
 // Admin pages
-import RequireAdmin from './components/RequireAdmin';
 import AdminDashboard from './pages/admin/Dashboard';
 import BooksIndex from './pages/admin/books/Index';
 import AddBook from './pages/admin/books/Add';
@@ -41,7 +41,15 @@ function Home() {
             {isLoggedIn && (
                 <nav>
                     <Link to="/books">Books</Link>
-                    {role == 'admin' && (
+                    {role !== 'admin' && (
+                        <>
+                            {' | '}
+                            <Link to="/cart">Cart</Link>
+                            {' | '}
+                            <Link to="/orders">Orders</Link>
+                        </>
+                    )}
+                    {role === 'admin' && (
                         <>
                             {' | '}
                             <Link to="/admin/books">Manage Books</Link>
@@ -64,66 +72,82 @@ export default function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/books" element={<Books />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/orders" element={<Orders />} />
-                        <Route path="/orders/:id" element={<Order />} />
+                        <Route path="/cart" element={
+                            <BlockedRoute roles={["admin"]}>
+                                <Cart />
+                            </BlockedRoute>
+                        } />
+                        <Route path="/checkout" element={
+                            <BlockedRoute roles={["admin"]}>
+                                <Checkout />
+                            </BlockedRoute>
+                        } />
+                        <Route path="/orders" element={
+                            <BlockedRoute roles={["admin"]}>
+                                <Orders />
+                            </BlockedRoute>
+                        } />
+                        <Route path="/orders/:id" element={
+                            <BlockedRoute roles={["admin"]}>
+                                <Order />
+                            </BlockedRoute>
+                        } />
 
                         <Route
                             path="/admin/"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <AdminDashboard />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
                         <Route
                             path="/admin/books"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <BooksIndex />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/add"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <AddBook />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/edit/:id"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <EditBook />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/:id"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <ShowBook />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
 
                         <Route
                             path="/admin/orders"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <OrdersIndex />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
                         <Route
                             path="/admin/orders/:id"
                             element={
-                                <RequireAdmin>
+                                <BlockedRoute roles={["customer"]}>
                                     <ShowOrder />
-                                </RequireAdmin>
+                                </BlockedRoute>
                             }
                         />
 

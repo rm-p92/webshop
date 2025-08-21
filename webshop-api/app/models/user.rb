@@ -6,12 +6,4 @@ class User < ApplicationRecord
   has_many :orders
 
   validates :email, presence: true, uniqueness: true
-
-  after_create :create_cart
-
-  private
-
-  def create_cart
-      Cart.create(user: self)
-  end
 end

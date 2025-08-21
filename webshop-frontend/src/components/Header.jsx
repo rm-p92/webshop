@@ -37,11 +37,14 @@ export default function Header() {
                 )}
                 {' | '}
                 <Link to="/books">Books</Link>
-                {' | '}
-                <Link to="/cart">Cart ({cartCount})</Link>
-                {' | '}
-                <Link to="/orders">Orders</Link>
-
+                {role !== 'admin' && (
+                    <>
+                        {' | '}
+                        <Link to="/cart">Cart ({cartCount})</Link>
+                        {' | '}
+                        <Link to="/orders">Orders</Link>
+                    </>
+                )}
                 {role === "admin" && (
                     <>
                         {" | "}

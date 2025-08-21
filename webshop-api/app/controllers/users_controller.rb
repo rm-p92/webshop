@@ -3,7 +3,9 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(user_params)
+    user.role = Role.find_by(name: 'customer')
     if user.save
+      Cart.create(user: user)
       token = encode_token({ user_id: user.id })
       render json: { user: UserSerializer.new(user), jwt: token }, status: :created
     else
