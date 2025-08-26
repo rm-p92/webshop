@@ -39,12 +39,4 @@ class ApplicationController < ActionController::API
       @current_user ||= User.find_by(id: user_id)
     end
   end
-
-  def logged_in?
-    !!current_user
-  end
-
-  def authorize
-    render json: { error: 'Please log in' }, status: :unauthorized unless logged_in?
-  end
 end

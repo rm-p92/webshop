@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  before_action :authorize, only: [:show]
-
   def create
     authorize! User, to: :create?
     user = User.find_by(email: params[:email])
