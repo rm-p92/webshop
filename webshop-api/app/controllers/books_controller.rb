@@ -11,20 +11,12 @@ class BooksController < ApplicationController
         search: search_term
       )
     end
-    render json: @books.as_json(
-      only: [:id, :title, :description, :price, :cover_image],
-      methods: [:genre_hierarchy],
-      include: { author: { only: [:name] } }
-    )
+    render json: @books
   end
 
   def show
     authorize! @book, to: :index?
-    render json: @book.as_json(
-      only: [:id, :title, :description, :price, :cover_image],
-      methods: [:genre_hierarchy],
-      include: { author: { only: [:name] } }
-    )
+    render json: @book
   end
 
   def create
