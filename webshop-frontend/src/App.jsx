@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import CartProvider from "./context/CartContext";
 import AlertProvider from "./context/AlertContext";
-import BlockedRoute from './context/BlockedRoute';
+import ProtectedRoute from './context/ProtectedRoute';
 
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -73,81 +73,81 @@ export default function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/books" element={<Books />} />
                         <Route path="/cart" element={
-                            <BlockedRoute roles={["admin"]}>
+                            <ProtectedRoute roles={["admin"]}>
                                 <Cart />
-                            </BlockedRoute>
+                            </ProtectedRoute>
                         } />
                         <Route path="/checkout" element={
-                            <BlockedRoute roles={["admin"]}>
+                            <ProtectedRoute roles={["admin"]}>
                                 <Checkout />
-                            </BlockedRoute>
+                            </ProtectedRoute>
                         } />
                         <Route path="/orders" element={
-                            <BlockedRoute roles={["admin"]}>
+                            <ProtectedRoute roles={["admin"]}>
                                 <Orders />
-                            </BlockedRoute>
+                            </ProtectedRoute>
                         } />
                         <Route path="/orders/:id" element={
-                            <BlockedRoute roles={["admin"]}>
+                            <ProtectedRoute roles={["admin"]}>
                                 <Order />
-                            </BlockedRoute>
+                            </ProtectedRoute>
                         } />
 
                         <Route
                             path="/admin/"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <AdminDashboard />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
                         <Route
                             path="/admin/books"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <BooksIndex />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/add"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <AddBook />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/edit/:id"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <EditBook />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
                         <Route
                             path="/admin/books/:id"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <ShowBook />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
 
                         <Route
                             path="/admin/orders"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <OrdersIndex />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
                         <Route
                             path="/admin/orders/:id"
                             element={
-                                <BlockedRoute roles={["customer"]}>
+                                <ProtectedRoute roles={["customer"]}>
                                     <ShowOrder />
-                                </BlockedRoute>
+                                </ProtectedRoute>
                             }
                         />
 
