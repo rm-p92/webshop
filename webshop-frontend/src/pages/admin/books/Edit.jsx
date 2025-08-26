@@ -14,16 +14,34 @@ export default function EditBook() {
     const [authors, setAuthors] = useState([]);
     const [genres, setGenres] = useState([]);
     const [form, setForm] = useState(null);
+    const [original, setOriginal] = useState(null);
 
     useEffect(() => {
-        getBook(id).then(setForm);
+        getBook(id).then(book => {
+            setForm(book);
+            setOriginal(book);
+        });
         getAuthors().then(setAuthors);
         getGenres().then(setGenres);
     }, [id]);
 
+    function getChangedFields(original, edited) {
+        const changed = {};
+        Object.keys(edited).forEach(key => {
+            if (edited[key] !== original[key]) {
+                changed[key] = edited[key];
+            }
+        });
+        return changed;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await updateBook(id, form);
+        const changedFields = getChangedFields(original, form);
+        if (Object.keys(changedFields).length === 0) {
+            return;
+        }
+        await updateBook(id, changedFields);
         navigate('/admin/books');
     };
 
