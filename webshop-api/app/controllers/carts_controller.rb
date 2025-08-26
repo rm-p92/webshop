@@ -1,12 +1,12 @@
 class CartsController < ApplicationController
   def show
-    cart = current_user.cart
+    return unless cart = get_cart!
     authorize! cart, to: :show?
     render json: cart, include: ['cart_items.book']
   end
 
   def add_item
-    cart = current_user.cart
+    return unless cart = get_cart!
     authorize! cart, to: :update?
     item = cart.cart_items.find_or_initialize_by(book_id: params[:book_id])
     item.quantity = (item.quantity || 0) + (params[:quantity] || 1).to_i
@@ -19,7 +19,7 @@ class CartsController < ApplicationController
   end
 
   def update_item
-    cart = current_user.cart
+    return unless cart = get_cart!
     authorize! cart, to: :update?
     item = cart.cart_items.find(params[:id])
 
@@ -31,11 +31,21 @@ class CartsController < ApplicationController
   end
 
   def remove_item
-    cart = current_user.cart
+    return unless cart = get_cart!
     authorize! cart, to: :update?
     item = cart.cart_items.find(params[:id])
     item.destroy
 
     render json: cart, serializer: CartSerializer
+  end
+
+  private
+
+  def get_cart!
+    cart = current_user&.cart
+    unless cart
+      render json: { error: "Cart not found" }, status: :not_found and return
+    end
+    cart
   end
 end
