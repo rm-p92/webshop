@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::API
+  include ActionPolicy::Behaviour
+  authorize :user, through: :current_user
+
   SECRET_KEY = ENV['JWT_SECRET_KEY'] || Rails.application.secret_key_base
 
   def encode_token(payload)

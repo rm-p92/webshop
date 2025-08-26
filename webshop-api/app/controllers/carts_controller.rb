@@ -1,13 +1,13 @@
 class CartsController < ApplicationController
-  before_action :authorize
-
   def show
     cart = current_user.cart
+    authorize! cart, to: :show?
     render json: cart, include: ['cart_items.book']
   end
 
   def add_item
     cart = current_user.cart
+    authorize! cart, to: :update?
     item = cart.cart_items.find_or_initialize_by(book_id: params[:book_id])
     item.quantity = (item.quantity || 0) + (params[:quantity] || 1).to_i
 
@@ -20,6 +20,7 @@ class CartsController < ApplicationController
 
   def update_item
     cart = current_user.cart
+    authorize! cart, to: :update?
     item = cart.cart_items.find(params[:id])
 
     if item.update(quantity: params[:quantity])
@@ -31,6 +32,7 @@ class CartsController < ApplicationController
 
   def remove_item
     cart = current_user.cart
+    authorize! cart, to: :update?
     item = cart.cart_items.find(params[:id])
     item.destroy
 

@@ -1,9 +1,8 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :update, :destroy]
-  before_action :authorize, only: [:create, :update, :destroy]
-  before_action :require_admin, only: [:create, :update, :destroy]
 
   def index
+    authorize! Book, to: :index?
     @books = Book.includes(genre: :parent, author: {})
     if params[:search].present?
       search_term = "%#{params[:search]}%"
@@ -20,6 +19,7 @@ class BooksController < ApplicationController
   end
 
   def show
+    authorize! @book, to: :index?
     render json: @book.as_json(
       only: [:id, :title, :description, :price, :cover_image],
       methods: [:genre_hierarchy],
@@ -28,6 +28,7 @@ class BooksController < ApplicationController
   end
 
   def create
+    authorize! Book, to: :create?
     @book = Book.new(book_params)
     if @book.save
       render json: @book, status: :created
@@ -37,6 +38,7 @@ class BooksController < ApplicationController
   end
 
   def update
+    authorize! @book, to: :update?
     if @book.update(book_params)
       render json: @book
     else
@@ -45,6 +47,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
+    authorize! @book, to: :destroy?
     @book.destroy
     head :no_content
   end
@@ -57,11 +60,5 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title, :description, :cover_image, :price, :author_id, :genre_id)
-  end
-
-  def require_admin
-    unless current_user&.role&.name == "admin"
-      render json: { error: "Not authorized" }, status: :forbidden
-    end
   end
 end

@@ -6,4 +6,11 @@ class User < ApplicationRecord
   has_many :orders
 
   validates :email, presence: true, uniqueness: true
+
+  def role?(name)
+    role&.name == name.to_s
+  end
+
+  def admin?  = role?(:admin)
+  def customer? = role?(:customer)
 end

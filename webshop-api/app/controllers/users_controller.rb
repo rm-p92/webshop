@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authorize, only: [:show]
-
   def create
+    authorize! User, to: :create?
     user = User.new(user_params)
     user.role = Role.find_by(name: 'customer')
     if user.save
@@ -14,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    authorize! current_user, to: :show?
     render json: current_user
   end
 
