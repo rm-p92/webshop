@@ -1,6 +1,5 @@
 
 class OrdersController < ApplicationController
-  before_action :authorize
   before_action :set_order, only: [:show, :update, :destroy]
 
   ORDER_ITEM_TREE = ['order_items', 'order_items.book', 'user'].freeze

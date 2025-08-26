@@ -1,6 +1,6 @@
 class OrderPolicy < ApplicationPolicy
   def index?
-    user.present?
+    user.present? || deny!([:orders, :index])
   end
 
   def get_all_orders?

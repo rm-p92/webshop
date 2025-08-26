@@ -3,6 +3,16 @@ class ApplicationController < ActionController::API
   authorize :user, through: :current_user
 
   SECRET_KEY = ENV['JWT_SECRET_KEY'] || Rails.application.secret_key_base
+  
+  rescue_from ActionPolicy::Unauthorized do |ex|
+    reasons = ex.result&.reasons&.to_h&.values&.first&.first
+    message = if reasons.is_a?(Array)
+      I18n.t(["action_policy.unauthorized", *reasons].join("."), default: I18n.t("action_policy.unauthorized.default"))
+    else
+      I18n.t("action_policy.unauthorized.default")
+    end
+    render json: { error: message }, status: :forbidden
+  end
 
   def encode_token(payload)
     JWT.encode(payload, SECRET_KEY)

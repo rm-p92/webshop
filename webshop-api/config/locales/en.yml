@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  action_policy:
+    unauthorized:
+      default: "You are not authorized to perform this action."
+      orders:
+        index: "You must be logged in to view orders."
