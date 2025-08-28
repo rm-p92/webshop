@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   post "/signup", to: "users#create"
   post "/login", to: "sessions#create"
   get "/authorized", to: "sessions#show"
-  get "/dashboard", to: "users#show"
+  get "/user", to: "users#show"
 
   resources :authors, only: [:index]
   resources :genres, only: [:index]

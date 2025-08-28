@@ -25,7 +25,7 @@ class OrdersController < ApplicationController
     authorize! Order, to: :create?
     cart = current_user.cart
     if cart.cart_items.empty?
-      return render json: { error: "Cart is empty" }, status: :unprocessable_entity
+      return render json: { error: "Cart is empty" }, status: :unprocessable_content
     end
 
     order = current_user.orders.create!(status: "pending")

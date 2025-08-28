@@ -25,7 +25,7 @@ class BooksController < ApplicationController
     if @book.save
       render json: @book, status: :created
     else
-      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -34,7 +34,7 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       render json: @book
     else
-      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_content
     end
   end
 

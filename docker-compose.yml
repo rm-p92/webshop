@@ -18,7 +18,7 @@ services:
       - ./webshop-api:/app
       - gem_cache:/usr/local/bundle
     environment:
-      RAILS_ENV: ${RAILS_ENV}
+      # RAILS_ENV: ${RAILS_ENV}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}

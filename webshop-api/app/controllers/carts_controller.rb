@@ -14,7 +14,7 @@ class CartsController < ApplicationController
     if item.save
       render json: cart, serializer: CartSerializer
     else
-      render json: { error: item.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: item.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class CartsController < ApplicationController
     if item.update(quantity: params[:quantity])
       render json: cart, serializer: CartSerializer
     else
-      render json: { error: item.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: item.errors.full_messages }, status: :unprocessable_content
     end
   end
 
