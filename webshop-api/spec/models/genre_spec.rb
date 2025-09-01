@@ -8,14 +8,14 @@ RSpec.describe Genre, type: :model do
 
   describe '#ancestors' do
     it 'returns the list of ancestors from root to immediate parent' do
-      root = Genre.create!(name: 'Fiction')
-      child = Genre.create!(name: 'Fantasy', parent: root)
-      leaf = Genre.create!(name: 'Epic', parent: child)
+      root = create(:genre, name: 'Fiction')
+      child = create(:genre, name: 'Fantasy', parent: root)
+      leaf = create(:genre, name: 'Epic', parent: child)
       expect(leaf.ancestors).to eq([root, child])
     end
 
     it 'returns an empty array if there is no parent' do
-      genre = Genre.create!(name: 'Nonfiction')
+      genre = create(:genre, name: 'Nonfiction')
       expect(genre.ancestors).to eq([])
     end
   end

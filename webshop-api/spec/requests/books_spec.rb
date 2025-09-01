@@ -1,11 +1,12 @@
 require 'rails_helper'
+require 'faker'
 
 RSpec.describe "Books API", type: :request do
 
-	let!(:author) { Author.create!(name: "Author A") }
-	let!(:genre) { Genre.create!(name: "Fiction") }
-	let!(:book1) { Book.create!(title: "Book 1 #{SecureRandom.hex(4)}", price: 10, author: author, genre: genre) }
-	let!(:book2) { Book.create!(title: "Book 2 #{SecureRandom.hex(4)}", price: 20, author: author, genre: genre) }
+	let!(:author) { Author.create!(name: Faker::Book.unique.author) }
+	let!(:genre) { Genre.create!(name: Faker::Book.unique.genre) }
+	let!(:book1) { Book.create!(title: Faker::Book.unique.title, price: 10, author: author, genre: genre) }
+	let!(:book2) { Book.create!(title: Faker::Book.unique.title, price: 20, author: author, genre: genre) }
 		before do
 		allow_any_instance_of(ApplicationController).to receive(:authorize!).and_return(true)
 	end
@@ -39,7 +40,7 @@ RSpec.describe "Books API", type: :request do
 	describe "POST /books" do
 		it "creates a new book" do
 			book_params = {
-				title: "Book 3 #{SecureRandom.hex(4)}",
+				title: Faker::Book.unique.title,
 				price: 30,
 				author_id: author.id,
 				genre_id: genre.id

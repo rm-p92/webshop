@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'faker'
 
 RSpec.describe "Users API", type: :request do
 	let!(:role) { Role.create!(name: 'customer') }
@@ -9,15 +10,17 @@ RSpec.describe "Users API", type: :request do
 
 	describe "POST /signup" do
         puts "RAILS_ENV: #{Rails.env}"
-		it "creates a new user and returns user and jwt" do
-			user_params = { email: 'newuser@example.com', password: 'password' }
-			post "/signup", params: user_params
-			expect(response).to have_http_status(:created)
-			json = JSON.parse(response.body)
-			expect(json["user"]).to be_present
-			expect(json["user"]["email"]).to eq('newuser@example.com')
-			expect(json["jwt"]).to be_present
-		end
+			it "creates a new user and returns user and jwt" do
+				email = Faker::Internet.unique.email
+				password = Faker::Internet.password(min_length: 8)
+				user_params = { email: email, password: password }
+				post "/signup", params: user_params
+				expect(response).to have_http_status(:created)
+				json = JSON.parse(response.body)
+				expect(json["user"]).to be_present
+				expect(json["user"]["email"]).to eq(email)
+				expect(json["jwt"]).to be_present
+			end
 
 		it "returns errors if user is invalid" do
 			post "/signup", params: { email: '', password: '' }
@@ -28,7 +31,7 @@ RSpec.describe "Users API", type: :request do
 	end
 
 	describe "GET /user" do
-		let!(:user) { User.create!(email: 'user1@example.com', password: 'password', role: role) }
+		let!(:user) { User.create!(email: Faker::Internet.unique.email, password: Faker::Internet.password(min_length: 8), role: role) }
 
 		before do
 			allow_any_instance_of(UsersController).to receive(:current_user).and_return(user)
