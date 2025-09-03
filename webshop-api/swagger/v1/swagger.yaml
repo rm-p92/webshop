@@ -1,0 +1,412 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/authors":
+    get:
+      summary: Retrieves authors
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: authors found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                - id
+                - name
+  "/books":
+    get:
+      summary: Retrieves books
+      tags:
+      - Books
+      responses:
+        '200':
+          description: books found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: string
+                    cover_image:
+                      type: string
+                      nullable: true
+                    genre_hierarchy:
+                      type: array
+                      items:
+                        type: string
+                    author:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                  required:
+                  - id
+                  - title
+                  - description
+                  - price
+                  - cover_image
+                  - genre_hierarchy
+                  - author
+    post:
+      summary: Creates a book
+      tags:
+      - Books
+      parameters: []
+      responses:
+        '201':
+          description: book created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                cover_image:
+                  type: string
+                  nullable: true
+                price:
+                  type: number
+                author_id:
+                  type: integer
+                genre_id:
+                  type: integer
+              required:
+              - title
+              - description
+              - price
+              - author_id
+              - genre_id
+  "/books/{id}":
+    get:
+      summary: Retrieves a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: book found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: string
+                  cover_image:
+                    type: string
+                    nullable: true
+                  genre_hierarchy:
+                    type: array
+                    items:
+                      type: string
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                    required:
+                    - id
+                    - name
+                required:
+                - id
+                - title
+                - description
+                - price
+                - cover_image
+                - genre_hierarchy
+                - author
+        '404':
+          description: book not found
+    put:
+      summary: Updates a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: book updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                cover_image:
+                  type: string
+                  nullable: true
+                price:
+                  type: number
+                author_id:
+                  type: integer
+                genre_id:
+                  type: integer
+    delete:
+      summary: Deletes a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: book deleted
+        '404':
+          description: book not found
+  "/cart":
+    get:
+      summary: Show cart
+      tags:
+      - Cart
+      responses:
+        '200':
+          description: cart found
+  "/cart/add":
+    post:
+      summary: Add item to cart
+      tags:
+      - Cart
+      responses:
+        '200':
+          description: item added
+  "/cart/update/{id}":
+    put:
+      summary: Update cart item
+      tags:
+      - Cart
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: item updated
+        '404':
+          description: item not found
+  "/cart/remove/{id}":
+    delete:
+      summary: Remove cart item
+      tags:
+      - Cart
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: item removed
+        '404':
+          description: item not found
+  "/genres":
+    get:
+      summary: Retrieves genres
+      tags:
+      - Genres
+      responses:
+        '200':
+          description: genres found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                - id
+                - name
+  "/orders":
+    get:
+      summary: List orders
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: orders found
+    post:
+      summary: Create order
+      tags:
+      - Orders
+      responses:
+        '201':
+          description: order created
+  "/orders/{id}":
+    get:
+      summary: Show order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: order found
+        '404':
+          description: order not found
+    put:
+      summary: Update order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: order updated
+        '422':
+          description: invalid request
+    delete:
+      summary: Delete order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: order deleted
+        '404':
+          description: order not found
+  "/orders/all":
+    get:
+      summary: Get all orders
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: all orders found
+  "/login":
+    post:
+      summary: User login
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: successful login
+        '401':
+          description: invalid email or password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+  "/signup":
+    post:
+      summary: User signup
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+              required:
+              - email
+              - password
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: dev.webshop-api.localhost
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearerAuth: []

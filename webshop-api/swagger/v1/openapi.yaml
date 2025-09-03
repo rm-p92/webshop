@@ -1,0 +1,215 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/authors":
+    get:
+      summary: Retrieves authors
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: authors found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                - id
+                - name
+  "/books":
+    get:
+      summary: Retrieves books
+      tags:
+      - Books
+      responses:
+        '200':
+          description: books found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    cover_image:
+                      type: string
+                      nullable: true
+                    price:
+                      type: number
+                    author_id:
+                      type: integer
+                    genre_id:
+                      type: integer
+                  required:
+                  - id
+                  - title
+                  - description
+                  - price
+                  - author_id
+                  - genre_id
+    post:
+      summary: Creates a book
+      tags:
+      - Books
+      parameters: []
+      responses:
+        '201':
+          description: book created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                cover_image:
+                  type: string
+                  nullable: true
+                price:
+                  type: number
+                author_id:
+                  type: integer
+                genre_id:
+                  type: integer
+              required:
+              - title
+              - description
+              - price
+              - author_id
+              - genre_id
+  "/books/{id}":
+    get:
+      summary: Retrieves a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: book found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  cover_image:
+                    type: string
+                    nullable: true
+                  price:
+                    type: number
+                  author_id:
+                    type: integer
+                  genre_id:
+                    type: integer
+                required:
+                - id
+                - title
+                - description
+                - price
+                - author_id
+                - genre_id
+        '404':
+          description: book not found
+    put:
+      summary: Updates a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: book updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                cover_image:
+                  type: string
+                  nullable: true
+                price:
+                  type: number
+                author_id:
+                  type: integer
+                genre_id:
+                  type: integer
+    delete:
+      summary: Deletes a book
+      tags:
+      - Books
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: book deleted
+        '404':
+          description: book not found
+  "/genres":
+    get:
+      summary: Retrieves genres
+      tags:
+      - Genres
+      responses:
+        '200':
+          description: genres found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                - id
+                - name
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: dev.webshop-api.localhost
