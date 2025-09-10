@@ -24,6 +24,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - db
     labels:
@@ -57,6 +58,49 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  redis:
+    image: redis:7
+    ports:
+    - "6379:6379"
+
+  sidekiq:
+    build: ./webshop-api
+    command: bundle exec sidekiq
+    volumes:
+      - ./webshop-api:/app
+      - gem_cache:/usr/local/bundle
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+
+  clockwork:
+    build: ./webshop-api
+    command: bundle exec clockwork config/clock.rb
+    volumes:
+      - ./webshop-api:/app
+      - gem_cache:/usr/local/bundle
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
 
 volumes:
   db_data:

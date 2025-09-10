@@ -41,6 +41,9 @@ gem "active_model_serializers"
 
 gem "action_policy"
 
+gem 'sidekiq'
+gem 'clockwork'
+
 group :development, :test do
   gem 'rspec-rails', '~> 8.0.0'
 
