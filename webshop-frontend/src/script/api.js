@@ -52,9 +52,14 @@ export function signup(email, password) {
     });
 }
 
-// Books CRUD
-export function getBooks(search = "") {
-    const query = search ? `?search=${encodeURIComponent(search)}` : "";
+export function getBooks({ search = "", author_id = "", genre_id = "", page = 1, per_page = 12 } = {}) {
+    const params = new URLSearchParams();
+    if (search) params.append("search", search);
+    if (author_id) params.append("author_id", author_id);
+    if (genre_id) params.append("genre_id", genre_id);
+    params.append("page", page);
+    params.append("per_page", per_page);
+    const query = params.toString() ? `?${params.toString()}` : "";
     return apiRequest(`/books${query}`);
 }
 

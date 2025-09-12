@@ -1,20 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@theme {
+  --font-spacemono: "Space Mono", monospace; 
+}
+
 @layer base {
     html {
-        @apply scroll-smooth;
+        @apply scroll-smooth font-spacemono;
     }
 
     body {
-        @apply bg-neutral-50 text-neutral-800 antialiased leading-relaxed p-4;
+        @apply bg-neutral-50 text-neutral-800 antialiased leading-relaxed p-4 md:p-8 lg:p-10;
         font-size: 16px;
+    }
+
+    header {
+        @apply p-8 md:p-10 bg-neutral-900 text-neutral-50 rounded-4xl;
     }
 
     /* Headings */
     h1, h2, h3, h4, h5, h6 {
-        @apply font-semibold tracking-tight text-neutral-900;
+        @apply font-semibold tracking-tight;
     }
     h1 { @apply text-3xl md:text-4xl mb-6; }
     h2 { @apply text-2xl md:text-3xl mb-5; }
@@ -29,10 +39,10 @@
     }
 
     /* Links */
-    a {
-        @apply underline underline-offset-2 decoration-neutral-300 text-neutral-900 hover:decoration-neutral-500 transition cursor-pointer;
+    /* a {
+        @apply underline underline-offset-2 decoration-neutral-300 hover:decoration-neutral-500 transition cursor-pointer;
         @apply mr-2;
-    }
+    } */
 
     /* Lists */
     ul { @apply list-disc pl-6 mb-4; }
@@ -119,6 +129,10 @@
     /* Smooth theme change transitions */
     * {
         @apply motion-safe:transition-colors motion-safe:duration-200;
+    }
+
+    .searchbar {
+        @apply p-8 border-none focus:border-none rounded-4xl w-full text-xl;
     }
 }
 

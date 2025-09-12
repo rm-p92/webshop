@@ -4,6 +4,8 @@ class BooksController < ApplicationController
   def index
     authorize! Book, to: :index?
     @books = Book.includes(genre: :parent, author: {})
+    @books = @books.by_genre(params[:genre_id]) if params[:genre_id].present?
+    @books = @books.by_author(params[:author_id]) if params[:author_id].present?
     if params[:search].present?
       search_term = "%#{params[:search]}%"
       @books = @books.joins(:genre, :author).where(
@@ -11,7 +13,13 @@ class BooksController < ApplicationController
         search: search_term
       )
     end
-    render json: @books
+    @books = @books.page(params[:page]).per(params[:per_page] || 12)
+    render json: {
+      books: @books,
+      total_pages: @books.total_pages,
+      current_page: @books.current_page,
+      total_count: @books.total_count
+    }
   end
 
   def show

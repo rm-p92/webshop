@@ -44,6 +44,8 @@ gem "action_policy"
 gem 'sidekiq'
 gem 'clockwork'
 
+gem 'kaminari'
+
 group :development, :test do
   gem 'rspec-rails', '~> 8.0.0'
 
